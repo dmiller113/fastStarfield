@@ -9,16 +9,25 @@ window.onload = function() {
 		ret.draw = function() {
 			ctx.fillStyle = "white";
 			sD = starD * this.ratio;
-			sX = ((this.x - canvas.width / 2) * 
-				this.ratio + canvas.width / 2);
-			sY = ((this.y - canvas.height / 2) * 
-				this.ratio + canvas.height / 2);
+			sX = this.translate(this.x);
+			sY = this.translate(this.y);
 			ctx.fillRect(sX, sY, sD, sD);
 		}
 
 		ret.update = function() {
 			this.ratio += 0.01;
-			if (this.ratio > 1.0) this.ratio = 0.1;
+			// if (this.ratio > 1.0) this.ratio = 0.1;
+			sX = this.translate(this.x);
+			sY = this.translate(this.y);
+
+			if (sX > canvas.width || sX < 0) this.ratio = 0.1;
+			if (sY > canvas.height || sY < 0) this.ratio = 0.1;
+			if (this.ratio > 2.0) this.ratio = 0.1;
+		}
+
+		ret.translate = function(value) {
+			return ((value - canvas.width / 2) *
+				this.ratio + canvas.width / 2);
 		}
 
 		return ret;
